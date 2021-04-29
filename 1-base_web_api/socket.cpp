@@ -16,7 +16,7 @@ static void handle_term( int sig )
 
 int main( int argc, char* argv[] )
 {
-    //
+    // 
     signal( SIGTERM, handle_term );
 
     if( argc <= 3 )
@@ -29,9 +29,12 @@ int main( int argc, char* argv[] )
     int port = atoi( argv[2] );
     int backlog = atoi( argv[3] );
 
+    // 定义socket(返回文件标识符)
     int sock = socket( PF_INET, SOCK_STREAM, 0 );
+    // 判断是否生成文件标识符
     assert( sock >= 0 );
 
+    // ip地址+端口号
     struct sockaddr_in address;
     bzero( &address, sizeof( address ) );
     address.sin_family = AF_INET;
@@ -39,9 +42,11 @@ int main( int argc, char* argv[] )
     inet_pton( AF_INET, ip, &address.sin_addr );
     address.sin_port = htons( port );
 
+    // socket命名
     int ret = bind( sock, ( struct sockaddr* )&address, sizeof( address ) );
     assert( ret != -1 );
 
+    // listen
     ret = listen( sock, backlog );
     assert( ret != -1 );
 
